@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "AVR",
+            "name": "Mac+homebrew",
             "includePath": [
                 "/usr/local/opt/avr-gcc@8/lib/avr-gcc/8/gcc/avr/8.3.0/include",
                 "/usr/local/opt/avr-gcc@8/avr/include",
@@ -11,7 +11,7 @@
             "defines": [
                 "__AVR_ATmega8__"
             ],
-            "intelliSenseMode": "clang-x64",
+            "intelliSenseMode": "gcc-x64",
             "cStandard": "c11"
         }
     ],
