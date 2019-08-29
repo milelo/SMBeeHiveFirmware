@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "usbasp.h": "c"
+    },
+    "cSpell.words": [
+        "usbasp"
+    ]
+}

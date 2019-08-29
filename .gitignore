@@ -1,0 +1,11 @@
+firmware/main.hex
+firmware/main.map
+firmware/main.o
+firmware/main.bin
+firmware/clock.o
+firmware/isp.o
+firmware/tpi.o
+firmware/usbdrv/oddebug.o
+firmware/usbdrv/usbdrv.o
+firmware/usbdrv/usbdrvasm.o
+.history

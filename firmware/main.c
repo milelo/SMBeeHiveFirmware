@@ -18,6 +18,8 @@
 #include <avr/pgmspace.h>
 #include <avr/wdt.h>
 
+#include <util/delay.h>
+
 #include "usbasp.h"
 #include "usbdrv.h"
 #include "isp.h"
@@ -148,14 +150,14 @@ uchar usbFunctionSetup(uchar data[8]) {
 	} else if (data[1] == USBASP_FUNC_TPI_CONNECT) {
 		tpi_dly_cnt = data[2] | (data[3] << 8);
 
-		/* RST high */
+		/* RST high - apply 12V programming voltage*/
 		ISP_OUT |= (1 << ISP_RST);
 		ISP_DDR |= (1 << ISP_RST);
 
 		clockWait(3);
 
 		/* RST low */
-		ISP_OUT &= ~(1 << ISP_RST);
+		//ISP_OUT &= ~(1 << ISP_RST);
 		ledRedOn();
 
 		clockWait(16);
@@ -168,19 +170,24 @@ uchar usbFunctionSetup(uchar data[8]) {
 
 		clockWait(10);
 
-		/* pulse RST */
-		ISP_OUT |= (1 << ISP_RST);
-		clockWait(5);
-		ISP_OUT &= ~(1 << ISP_RST);
-		clockWait(5);
-
-		/* set all ISP pins inputs */
-		ISP_DDR &= ~((1 << ISP_RST) | (1 << ISP_SCK) | (1 << ISP_MOSI));
 		/* switch pullups off */
-		ISP_OUT &= ~((1 << ISP_RST) | (1 << ISP_SCK) | (1 << ISP_MOSI));
+		ISP_OUT &= ~((1 << ISP_SCK) | (1 << ISP_MOSI));
+		/* set pins inputs */
+		ISP_DDR &= ~((1 << ISP_SCK) | (1 << ISP_MOSI));
 
-		ledRedOff();
-	
+		_delay_ms(5000);
+		//remove 12V programming voltage 
+		ISP_OUT &= ~(1 << ISP_RST);
+		/* set reset pin to input */
+		ISP_DDR &= ~(1 << ISP_RST);
+		
+	    ledRedOff();
+		// _delay_ms(5000U);
+		// ledRedOn();
+		// _delay_ms(10000U);
+		// ledRedOff();
+
+
 	} else if (data[1] == USBASP_FUNC_TPI_RAWREAD) {
 		replyBuffer[0] = tpi_recv_byte();
 		len = 1;
